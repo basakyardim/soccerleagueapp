@@ -1,6 +1,6 @@
 package com.example.soccerleagueapp.service
 
-import com.example.soccerleagueapp.model.TeamsModelItem
+import com.example.soccerleagueapp.model.TeamsModel
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -17,7 +17,7 @@ class TeamsApiService {
         .create(TeamsAPI::class.java)
 
 
-    fun getData():Single<List<TeamsModelItem>>{
+    fun getData():Single<TeamsModel>{
         return api.getTeams()
     }
 }

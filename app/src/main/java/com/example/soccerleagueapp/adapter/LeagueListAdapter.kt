@@ -27,4 +27,10 @@ class LeagueListAdapter(val teamList: ArrayList<TeamsModelItem>) : RecyclerView.
     override fun getItemCount(): Int {
         return teamList.size
     }
+
+    fun updateList(newList: List<TeamsModelItem>){
+        teamList.clear()
+        teamList.addAll(newList)
+        notifyDataSetChanged()
+    }
 }
