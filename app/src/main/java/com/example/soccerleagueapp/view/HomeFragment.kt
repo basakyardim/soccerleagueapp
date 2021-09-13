@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.soccerleagueapp.R
 import com.example.soccerleagueapp.adapter.LeagueListAdapter
+import com.example.soccerleagueapp.league.Team
 import com.example.soccerleagueapp.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -42,6 +43,8 @@ class HomeFragment : Fragment() {
         teams_list.layoutManager = LinearLayoutManager(context)
         teams_list.adapter = adapter
         observeData()
+
+
 
         fixture_button.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToFixtureFragment()
