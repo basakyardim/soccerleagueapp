@@ -1,7 +1,6 @@
 package com.example.soccerleagueapp.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.soccerleagueapp.R
 import com.example.soccerleagueapp.adapter.FixtureListAdapter
-import com.example.soccerleagueapp.adapter.LeagueListAdapter
+import com.example.soccerleagueapp.adapter.ViewPagerAdapter
 import com.example.soccerleagueapp.league.FixtureGenerator
 import com.example.soccerleagueapp.league.Match
 import com.example.soccerleagueapp.league.Team
@@ -20,25 +18,21 @@ import com.example.soccerleagueapp.league.Week
 import com.example.soccerleagueapp.model.TeamsModelItem
 import com.example.soccerleagueapp.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_fixture.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_view_pager.*
+import kotlinx.android.synthetic.main.fragment_view_pager.view.*
 
 
-class FixtureFragment : Fragment() {
+class ViewPagerFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     lateinit var leagueTeams: ArrayList<Team>
     lateinit var teamList: ArrayList<TeamsModelItem>
-    var emptyWeekTeam = Team("BYE")
-    lateinit var matchesOfWeek: List<Week>
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fixture, container, false)
+        return inflater.inflate(R.layout.fragment_view_pager, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,17 +41,13 @@ class FixtureFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         viewModel.getDataFromApi()
 
-
-
         observeData()
-
-        if (leagueTeams.size % 2 == 1) {
-            leagueTeams.add(emptyWeekTeam)
-        }
 
     }
 
     private fun observeData() {
+        val fragmentList = ArrayList<Fragment>()
+
         leagueTeams = ArrayList()
         teamList = ArrayList()
         viewModel.teams.observe(viewLifecycleOwner, Observer { teams ->
@@ -68,20 +58,19 @@ class FixtureFragment : Fragment() {
                 }
             }
             val fixtureGenerator = FixtureGenerator(leagueTeams.size)
-            matchesOfWeek = fixtureGenerator.createFixture(leagueTeams.size).map { k ->
-                Week(k.first, k.second.map { m ->
-                    Match(leagueTeams[m.first], leagueTeams[m.second])
-                })
+            val totWeeks = fixtureGenerator.totalWeeks
+            for (i in 1..totWeeks){
+                fragmentList.add(FixtureFragment())
             }
 
-            val adapter = FixtureListAdapter(matchesOfWeek)
+            val adapter = ViewPagerAdapter(
+                    fragmentList,
+                    requireActivity().supportFragmentManager,
+                    lifecycle)
+            view?.viewPager?.adapter = adapter
 
-            fixture_list.layoutManager = LinearLayoutManager(context)
-            fixture_list.adapter = adapter
         })
 
-
     }
-
 
 }

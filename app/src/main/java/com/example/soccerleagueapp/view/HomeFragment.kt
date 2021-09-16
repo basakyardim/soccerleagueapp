@@ -1,18 +1,23 @@
 package com.example.soccerleagueapp.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.transition.Transition
+import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.soccerleagueapp.R
 import com.example.soccerleagueapp.adapter.LeagueListAdapter
-import com.example.soccerleagueapp.league.Team
 import com.example.soccerleagueapp.viewmodel.HomeViewModel
+import com.google.android.material.button.MaterialButtonToggleGroup
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -23,6 +28,8 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
     }
 
@@ -47,9 +54,18 @@ class HomeFragment : Fragment() {
 
 
         fixture_button.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToFixtureFragment()
+            val action = HomeFragmentDirections.actionHomeFragmentToViewPagerFragment()
             Navigation.findNavController(it).navigate(action)
         }
+        theme_button.addOnButtonCheckedListener { group, selectedBtnId, isChecked ->
+            val theme = when (selectedBtnId) {
+                R.id.dark_mode_button -> AppCompatDelegate.MODE_NIGHT_YES
+                R.id.light_mode_button -> AppCompatDelegate.MODE_NIGHT_NO
+                else -> AppCompatDelegate.MODE_NIGHT_NO
+            }
+            AppCompatDelegate.setDefaultNightMode(theme)
+        }
+
     }
 
     fun observeData(){

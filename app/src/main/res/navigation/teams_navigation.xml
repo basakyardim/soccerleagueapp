@@ -8,15 +8,19 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.soccerleagueapp.view.HomeFragment"
-        android:label="fragment_home"
+        android:label="League Table"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_fixtureFragment"
-            app:destination="@id/fixtureFragment" />
+            android:id="@+id/action_homeFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment"
+            app:enterAnim="@anim/anim"
+            />
+
+
+
     </fragment>
     <fragment
-        android:id="@+id/fixtureFragment"
-        android:name="com.example.soccerleagueapp.view.FixtureFragment"
-        android:label="fragment_fixture"
-        tools:layout="@layout/fragment_fixture" />
+        android:id="@+id/viewPagerFragment"
+        android:name="com.example.soccerleagueapp.view.ViewPagerFragment"
+        android:label="Fixtures" />
 </navigation>
